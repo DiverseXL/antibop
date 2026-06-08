@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "dev": "ts-node src/index.ts",
-  "build": "tsc",
-  "start": "node dist/index.js",
-  "monitor": "ts-node src/monitor/slotMonitor.ts",
-  "bundle": "ts-node src/bundle/bundleEngine.ts",
-  "agent": "ts-node src/agent/tipAgent.ts"
-},
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test-infra": "ts-node src/test-infra.ts",
+    "monitor": "ts-node src/monitor/slotMonitor.ts",
+    "bundle": "ts-node src/bundle/bundleEngine.ts",
+    "agent": "ts-node src/agent/tipAgent.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DiverseXL/antibop.git"

@@ -1,99 +1,62 @@
-# Antibop — Agentic Engineering Grant Application
+# Antibop — Superteam Agentic Engineering Grant Application
 
-**Superteam Nigeria — Ideas → Prompt → Prod Grant**
+## One-line description
+Antibop is an agentic Solana transaction stack that monitors leader windows in real time, submits Jito bundles with adaptive tips, and automatically diagnoses + recovers from failures.
 
----
+## Problem
+Solana transactions fail for reasons most builders cannot see or act on in real time: leader window timing, competitive fee/tip markets, blockhash expiry, compute limits, leader skips, and congestion. Today, devs either overpay, spam retries, or ship without observability.
 
-## One Line Description
+## Solution (what I’m building)
+Antibop combines infrastructure signals + agentic policy to make bundle submission reliable and explainable:
 
-Antibop — AI-powered Solana stack: Jito bundles, live lifecycle tracking, and a four-agent GPT-4o system for autonomous tip decisions.
+- **Live monitoring** — slot + leader-window signals via Yellowstone gRPC (SolInfra)
+- **Bundle engine** — Jito bundle construction + submission with safety caps (no runaway tips)
+- **Lifecycle tracking** — submitted → processed → confirmed → finalized timestamps and latency deltas
+- **Failure forensics** — classify common failure modes and generate a recovery plan (retry strategy, tip adjustment, or hold)
+- **Auditability** — every action is logged with the “why” so decisions are debuggable
 
----
+## Why it’s “agentic”
+Antibop is designed around an autonomous policy loop:
 
-## Problem Statement
+- Observe: network signals (slot velocity, skip rate, landing outcomes)
+- Decide: tip level, submit/hold, and retry plan
+- Act: submit bundle / resubmit / switch endpoints (bounded by hard constraints)
+- Learn: update policy based on outcomes (with all reasoning logged)
 
-Solana transaction infrastructure is complex and unforgiving. Most developers submit transactions blindly with no visibility into leader windows, tip competitiveness, or why their transactions fail. There is no tooling that combines real-time network monitoring, intelligent bundle submission, and autonomous failure recovery in one system.
+## Current status (as of June 8, 2026)
+- Infra test suite for Solana RPC, WebSocket, REST, and Yellowstone gRPC (`src/test-infra.ts`)
+- Slot stream monitor printing confirmed slots from Yellowstone gRPC (`src/monitor/slotMonitor.ts`)
+- Repo published with setup + runnable scripts
 
----
+## Grant request (what the grant covers)
+I’m requesting coverage for 1 month of an AI engineering tool subscription used during the build sprint:
 
-## Solution
+- Primary: Claude Pro (or equivalent)
+- Optional: small API credit buffer for agent runs during demo week
 
-Antibop is a production-grade transaction stack that:
+## 4-week build plan
+- **Week 1** — slot monitor, leader-window detection, structured logs
+- **Week 2** — Jito bundle engine + circuit breaker + landing/lifecycle tracking
+- **Week 3** — agentic policy loop + failure classification + automated recovery strategies
+- **Week 4** — minimal dashboard, docs, demo runbook, and a reproducible end-to-end showcase
 
-- Monitors live Solana slots via Yellowstone gRPC (SolInfra)
-- Submits Jito bundles with dynamically calculated tips
-- Tracks every transaction through processed → confirmed → finalized with millisecond precision
-- Uses a four-agent GPT-4o Mini system to autonomously decide tip amounts, reason through failures, and recover without human intervention
-- Displays everything on a live React dashboard with a flight recorder UI
+## Success criteria (how reviewers can judge it)
+- End-to-end demo: monitor → submit → track commitments → explain outcome
+- Documented failure modes with reproducible recovery behavior
+- Clear logs and a “runbook” so other builders can adopt the stack
 
-Every decision the AI makes is logged and explainable. Any Solana developer can plug Antibop into their stack and immediately gain infrastructure-level intelligence over their transactions.
+## Proof of work (builder)
+**Builder:** DiverseXL (solo)
 
----
+**GitHub:** https://github.com/DiverseXL
 
-## How I Use AI Tools
-
-This entire project is being built using Claude as the primary coding assistant — architecture design, TypeScript module development, React dashboard, multi-agent prompt engineering, and debugging across the entire stack. The grant covers one month of Claude Pro access during the active build window.
-
----
-
-## Architecture
-
-Four-layer system:
-
-1. **Slot Monitor** — Yellowstone gRPC via SolInfra, live slot streaming and leader detection
-2. **Bundle Engine** — Jito bundle construction, circuit breaker safety layer, MEV-aware tip logic
-3. **Four-Agent AI System** — Network Analyst, Tip Strategist, Failure Forensics, Master Orchestrator with session memory
-4. **React Dashboard** — Flight recorder UI, real-time agent reasoning panel, fault injection controls
-
----
-
-## AI Agent Design
-
-- **Network Analyst** — runs continuously, updates shared policy state every 10 slots
-- **Tip Strategist** — reads live Jito tip percentiles + network state, decides tip amount with full reasoning chain
-- **Failure Forensics** — root cause analysis on every failure, produces autonomous recovery plan
-- **Master Orchestrator** — session memory, agent disagreement handling, confidence-gated submission
-
-The async policy engine ensures AI decisions never block the critical submission path — Solana blocks are 400ms, LLM calls can take 500ms-2s. The tip decision is pre-calculated in the background and read from memory at submission time.
-
----
-
-## Safety Features
-
-- **Circuit Breaker** — hardcoded MAX_TIP_LAMPORTS cap that overrides AI suggestions
-- **MEV-aware holding** — agent holds submission if tip would exceed expected transaction value
-- **Multi-RPC failover** — automatic switch to backup endpoint if primary stream degrades
-
----
-
-## Proof of Work
-
-**GitHub:** github.com/DiverseXL
-
-**Shipped projects:**
-
-- SuiCopilot — autonomous trading agent on Sui/Walrus (suicopilot.vercel.app)
-- SynapseResearchAgent — autonomous Solana research agent with Telegram delivery
+**Previously shipped (selected):**
+- SuiCopilot — autonomous trading agent on Sui/Walrus (https://suicopilot.vercel.app)
+- SynapseResearchAgent — autonomous Solana research agent w/ Telegram delivery
 - SolSentinel — AI-powered Solana token intelligence Telegram bot (Railway)
 - TradeGenome — wallet behavior reverse-engineering tool (Railway + Vercel)
-- AlphaSight — autonomous smart-money risk agent with React dashboard
-- Degen Receipt — Solana token roaster (degen-receipt.vercel.app)
-
----
-
-## Timeline
-
-- **Week 1** — Infrastructure + async policy engine + slot monitor
-- **Week 2** — Jito bundle engine + lifecycle tracker + 10 real bundle submissions
-- **Week 3** — Four-agent system + React dashboard + flight recorder UI
-- **Week 4** — Architecture document + README + submission
-
-**Deadline:** July 13, 2026
-
----
+- AlphaSight — smart-money risk agent w/ React dashboard
+- Degen Receipt — Solana token roaster (https://degen-receipt.vercel.app)
 
 ## Repository
-
-github.com/DiverseXL/antibop
-
-**Builder:** DiverseXL — solo submission
+https://github.com/DiverseXL/antibop
